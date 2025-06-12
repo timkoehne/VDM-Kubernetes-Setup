@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8005"
+    environment:
+      - WORKER_URL=http://image-editor-bw:8000/process
+    depends_on:
+      - image-editor-bw
+      - image-editor-rembg
+
+  image-editor-bw:
+    build:
+      context: ./image-editor-bw
+      dockerfile: Dockerfile
+
+  image-editor-rembg:
+    build:
+      context: ./image-editor-rembg
+      dockerfile: Dockerfile

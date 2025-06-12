@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Editor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <h1>Image Editor</h1>
+  <form id="upload-form">
+    <input type="file" id="image-file" name="file" accept="image/*" required />
+
+    <div class="form-group">
+      <label for="operation">Operation:</label>
+      <select id="operation" name="operation" required>
+        <option value="grayscale">Grayscale</option>
+        <option value="remove-bg">Remove Background</option>
+      </select>
+    </div>
+
+    <button type="submit">Upload and Process</button>
+  </form>
+
+  <div id="status"></div>
+  <div id="output"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
