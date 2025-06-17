@@ -8,6 +8,9 @@ WORKER_URLS = {
     "grayscale": "http://image-editor-bw:8000/process",
     "remove-bg": "http://image-editor-rembg:8000/process",
 }
+@app.get("/healthz")
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/upload")
 async def upload_image(

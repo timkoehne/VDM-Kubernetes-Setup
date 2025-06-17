@@ -5,6 +5,10 @@ from rembg import remove, new_session
 
 app = FastAPI()
 
+@app.get("/healthz")
+def health_check():
+    return {"status": "ok"}
+
 @app.post("/process")
 async def process(file: UploadFile = File(...)):
     if not file:

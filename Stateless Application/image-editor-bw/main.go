@@ -35,8 +35,15 @@ func processHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(buf.Bytes())
 }
 
+func healthzHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"ok"}`))
+}
+
 func main() {
 	http.HandleFunc("/process", processHandler)
+	http.HandleFunc("/healthz", healthzHandler)
 
 	http.ListenAndServe(":8000", nil)
 }
