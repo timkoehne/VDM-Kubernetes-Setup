@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: stateful
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+        - name: ghost
+          image: ghost:5-alpine
+          ports:
+            - containerPort: 2368
+          env:
+            - name: url
+              value: http://localhost:30081
+            - name: database__client
+              value: mysql
+            - name: database__connection__host
+              value: mariadb
+            - name: database__connection__user
+              valueFrom:
+                secretKeyRef:
+                  name: ghost-secret
+                  key: mariadb-user
+            - name: database__connection__password
+              valueFrom:
+                secretKeyRef:
+                  name: ghost-secret
+                  key: mariadb-password
+            - name: database__connection__database
+              value: ghost
+            - name: cache__type
+              value: redis
+            - name: cache__host
+              value: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ghost
+  namespace: stateful
+spec:
+  type: ClusterIP
+  selector:
+    app: ghost
+  ports:
+    - port: 2368
+      targetPort: 2368
